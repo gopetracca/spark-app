@@ -16,7 +16,7 @@ object S3SparkTest {
       // Logging config
       // TODO: The directory must already exist!
       .config("spark.eventLog.enabled", "true")
-      .config("spark.eventLog.dir", "file:///Users/gopetracca/projects/scala-app/tmp/spark/logs")
+      .config("spark.eventLog.dir", "tmp/spark/logs")
       // Needed for localstack
       .config("spark.hadoop.fs.s3a.endpoint", "http://localhost:4566")
       .config("spark.hadoop.fs.s3a.access.key", "FAKE_ACCESS_KEY")
@@ -35,21 +35,21 @@ object S3App {
 
     val context = "local"
     val useCaseParam = "useCase1"
-
+    val bucket = "fake-bucket"
 
     // Initialize dependencies
     val spark = S3SparkTest()
     val userLoader = new S3ReadRepository(
       spark = spark,
-      bucket = "fake-bucket",
-      path = "user/table_user.csv",
+      bucket = bucket,
+      path = "release-X_Y_Z/user/table_user.csv",
       options = Array(("header", "true"), ("inferSchema", "true")),
       format = "csv"
     )
 
     val consentLoader = new S3ReadRepository(
       spark = spark,
-      full_path = "s3a://fake-bucket/consent/",
+      full_path = s"s3a://${bucket}/release-X_Y_Z/consent/",
       options = Array(("header", "true"), ("inferSchema", "true")),
       format = "csv"
     )

@@ -7,7 +7,6 @@ import org.apache.spark.sql.DataFrame
 class FakeWriteRepository() extends WriteRepositoryInt {
   def write(df: DataFrame): DataFrame = {
     // Return the DataFrame
-    df.show()
     df
   }
 }

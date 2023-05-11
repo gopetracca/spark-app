@@ -35,7 +35,7 @@ class S3WriteRepository(
 
 object S3WriteRepository {
   def main(args: Array[String]): Unit = {
-
+    // Example usage
     import org.apache.spark.sql.SparkSession
     val sparkBuilder = SparkSession.builder()
       .appName("testing")
@@ -58,8 +58,6 @@ object S3WriteRepository {
     val data = spark.range(4).toDF()
     val dataWriter = new S3WriteRepository(spark, s"s3a://$bucket/$path", format, options)
     val result = dataWriter.write(data)
-    data.show()
-
 
   }
 }

@@ -8,11 +8,11 @@ import org.scalatest.funsuite.AnyFunSuite
 
 case class Result(name: String, age: Int, city: String, consent: Boolean)
 
-class UseCase1IntegrationTest extends AnyFunSuite with GivenWhenThen with ScalaDataFrameSuiteBase {
+class UseCase1NarrowTest extends AnyFunSuite with GivenWhenThen with ScalaDataFrameSuiteBase {
 
   import spark.implicits._
 
-  test("test UseCase1") {
+  test("Narrow Integration test for UseCase1. Return all adult users that gave consent.") {
     Given("A DataFrame with two Users.age > 18")
       val users = Seq(
         Users("UserX", 20, "Madrid"),
