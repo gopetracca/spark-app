@@ -183,10 +183,22 @@
             <goals>
               <goal>test</goal>
             </goals>
+            <configuration>
+              <suffixes>(?&lt;!Integration)(Test|Spec)</suffixes>
+            </configuration>
+          </execution>
+          <execution>
+            <id>integration-test</id>
+            <phase>integration-test</phase>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <suffixes>(?&lt;=Integration)(Test|Spec)</suffixes>
+            </configuration>
           </execution>
         </executions>
       </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
