@@ -38,14 +38,14 @@ object App {
     val spark = SparkTest()
     val userLoader = new LocalReadRepository(
       spark = spark,
-      path = "src/test/resources/data/release-3_x_x/user/table_user.csv",
+      path = "src/test/resources/data/release-X_Y_Z/user/table_user.csv",
       options = Array(("header", "true"), ("inferSchema", "true")),
       format = "csv"
     )
 
     val consentLoader = new LocalReadRepository(
       spark = spark,
-      path = "src/test/resources/data/release-3_x_x/consent/table_consent.csv",
+      path = "src/test/resources/data/release-X_Y_Z/consent/table_consent.csv",
       options = Array(("header", "true"), ("inferSchema", "true")),
       format = "csv"
     )
@@ -59,7 +59,7 @@ object App {
     }
 
     // run the use case
-    useCase.main()
+    useCase.main().show()
 
   }
 
