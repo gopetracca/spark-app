@@ -57,9 +57,9 @@
       <version>${spark.version}</version>
     </dependency>
     <dependency>
-    <groupId>org.apache.spark</groupId>
-    <artifactId>spark-catalyst_${scala.compat.version}</artifactId>
-    <version>${spark.version}</version>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-catalyst_${scala.compat.version}</artifactId>
+      <version>${spark.version}</version>
     </dependency>
     <dependency>
       <groupId>software.amazon.awssdk</groupId>
@@ -77,6 +77,13 @@
       <artifactId>hadoop-aws</artifactId>
       <version>${hadoop.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-hive_${scala.compat.version}</artifactId>
+      <version>${spark.version}</version>
+    </dependency>
+
 
     <!-- Test -->
     <dependency>
@@ -123,6 +130,17 @@
       <version>0.40.15</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- Used for HTML reports -->
+    <!-- https://mvnrepository.com/artifact/com.vladsch.flexmark/flexmark-all -->
+    <dependency>
+        <groupId>com.vladsch.flexmark</groupId>
+        <artifactId>flexmark-all</artifactId>
+        <version>0.61.34</version>
+        <scope>test</scope>
+    </dependency>
+
+
   </dependencies>
 
   <build>
@@ -166,40 +184,6 @@
       </plugin>
 
       <plugin>
-        <groupId>org.scalatest</groupId>
-        <artifactId>scalatest-maven-plugin</artifactId>
-        <version>2.2.0</version>
-        <configuration>
-          <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
-          <junitxml>.</junitxml>
-          <filereports>TestSuiteReport.txt</filereports>
-          <!-- Comma separated list of JUnit test class names to execute -->
-<!--          <jUnitClasses>com.gopetracca.appTest</jUnitClasses>-->
-        </configuration>
-        <executions>
-          <execution>
-            <id>test</id>
-            <goals>
-              <goal>test</goal>
-            </goals>
-            <configuration>
-              <suffixes>(?&lt;!Integration)(Test|Spec)</suffixes>
-            </configuration>
-          </execution>
-          <execution>
-            <id>integration-test</id>
-            <phase>integration-test</phase>
-            <goals>
-              <goal>test</goal>
-            </goals>
-            <configuration>
-              <suffixes>(?&lt;=Integration)(Test|Spec)</suffixes>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-    <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
         <version>2.4</version>
@@ -224,8 +208,92 @@
         </executions>
       </plugin>
 
+      <plugin>
+        <groupId>io.github.evis</groupId>
+        <artifactId>scalafix-maven-plugin_${scala.compat.version}</artifactId>
+        <version>0.1.8_0.10.4</version>
+        <configuration>
+
+          <skipTest>true</skipTest>
+        </configuration>
+      </plugin>
+
     </plugins>
 
   </build>
+
+
+  <profiles>
+    <profile>
+        <id>default-test</id>
+        <activation>
+            <activeByDefault>true</activeByDefault>
+        </activation>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>net.alchim31.maven</groupId>
+                    <artifactId>scala-maven-plugin</artifactId>
+                </plugin>
+                <plugin>
+                    <groupId>org.scalatest</groupId>
+                    <artifactId>scalatest-maven-plugin</artifactId>
+                    <version>1.0</version>
+                    <configuration>
+                        <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+                        <junitxml>.</junitxml>
+                        <filereports>TestSuiteReport.txt</filereports>
+                        <htmlreporters>${project.build.directory}/html/scalatest</htmlreporters>
+                        <testFailureIgnore>false</testFailureIgnore>
+                        <tagsToExclude>IntegrationTest</tagsToExclude>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>test</id>
+                            <goals>
+                                <goal>test</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+    <profile>
+        <id>integration-test</id>
+        <activation>
+            <activeByDefault>false</activeByDefault>
+        </activation>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>net.alchim31.maven</groupId>
+                    <artifactId>scala-maven-plugin</artifactId>
+                </plugin>
+                <plugin>
+                    <groupId>org.scalatest</groupId>
+                    <artifactId>scalatest-maven-plugin</artifactId>
+                    <version>1.0</version>
+                    <configuration>
+                        <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+                        <junitxml>.</junitxml>
+                        <filereports>IntegrationTestSuiteReport.txt</filereports>
+                        <htmlreporters>${project.build.directory}/html/scalatest</htmlreporters>
+                        <testFailureIgnore>false</testFailureIgnore>
+                        <tagsToInclude>IntegrationTest</tagsToInclude>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>test</id>
+                            <goals>
+                                <goal>test</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+</profiles>
 
 </project>
