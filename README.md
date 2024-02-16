@@ -78,8 +78,8 @@ To execute Unit tests run: `mvn test`
 Create the package: `mvn package`
 
 To execute Integration tests:
-- Stack Docker daemon or Docker Desktop
-- Run `mvn integration-test`
+- Start Docker daemon or Docker Desktop
+- Run `mvn test -Pintegration-test`
 
 ## Run the application
 
