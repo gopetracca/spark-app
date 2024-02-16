@@ -2,6 +2,7 @@ package com.gopetracca.logic
 
 import com.gopetracca.LocalStackContainerForAll
 import com.gopetracca.repositories._
+import com.gopetracca.Tags
 import com.holdenkarau.spark.testing.{ScalaDataFrameSuiteBase, SparkContextProvider}
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.{Row, SparkSession}
@@ -36,7 +37,7 @@ class UseCase1S3IntegrationTest extends AnyFunSuite
       .set("spark.hadoop.fs.s3a.connection.ssl.enabled", "false") // Disable SSL for Localstack
   }
 
-  test("UseCase1: Return all adult users that gave consent") {
+  test("UseCase1: Return all adult users that gave consent", Tags.IntegrationTest) {
     import spark.implicits._
 
     Given("A Bucket containing User data where two Users.age > 18")

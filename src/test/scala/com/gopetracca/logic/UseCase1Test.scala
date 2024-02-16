@@ -1,17 +1,19 @@
 package com.gopetracca.logic
 
+import com.gopetracca.Tags
 import com.gopetracca.entities.{Consents, Users}
 import com.gopetracca.repositories._
 import com.holdenkarau.spark.testing.ScalaDataFrameSuiteBase
 import org.scalatest.GivenWhenThen
 import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.Tag
 
 
 class UseCase1Test extends AnyFunSuite with GivenWhenThen with ScalaDataFrameSuiteBase {
 
   import spark.implicits._
 
-  test("test FilterByAge method") {
+  test("test FilterByAge method", Tags.UnitTest) {
     Given("A DataFrame with two Users, only one is older than 18")
       val users = Seq(
         Users("John", 4, "Madrid"),
@@ -32,7 +34,7 @@ class UseCase1Test extends AnyFunSuite with GivenWhenThen with ScalaDataFrameSui
       assertDataFrameEquals(result, expected)
   }
 
-  test("test FilterByConsent method") {
+  test("test FilterByConsent method", Tags.UnitTest) {
 
     Given("A DataFrame with two Users where only one gave consent")
       val consents = Seq(
